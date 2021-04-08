@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int gcount = 0;
+void rowCall(vector < vector <char> > & box, int cols, int r) {
+  r -= 1;
+  for (int i = 0; i < cols; i++) {
+    if (box[r][i] == 'B') {
+      box[r][i] = 'G';
+      gcount += 1;
+    }
+    else {
+      box[r][i] = 'B';
+      gcount -= 1;
+    }
+  }
+}
+
+void collCall(vector < vector <char> > & box, int rows, int c) {
+  c -= 1;
+  for (int i = 0; i < rows; i++) {
+    if (box[i][c] == 'B') {
+      box[i][c] = 'G';
+      gcount += 1;
+    }
+    else {
+      box[i][c] = 'B';
+      gcount -= 1;
+    }
+  }
+}
+
+int main() {
+  int br, bc, k, q;
+  
+  cin >> br;
+  cin >> bc;
+  vector < vector <char> > box;
+  for (int d = 0; d < br; d++) {
+    vector <char> row;
+    for (int i = 0; i < bc; i++) {
+      row.push_back('B');
+    }
+    box.push_back(row);
+  }
+
+  cin >> k;
+  char p;
+  char rc[k];
+  int rcnum[k];
+  for (int i = 0; i < k; i++) {
+    cin >> p >> q;
+    rc[i] = p;
+    rcnum[i] = q;
+  }
+
+
+  for (int i = 0; i < k; i++) {
+    if ((rc[i] == rc[i+1]) && (rcnum[i+1] == rcnum[i])) continue;
+    if ((rc[i] == rc[i-1]) && (rcnum[i-1] == rcnum[i])) continue;
+    if (rc[i] == 'R') {
+      rowCall(box, bc, rcnum[i]);
+    }
+    else if (rc[i] == 'C') {
+      collCall(box, br, rcnum[i]);
+    }
+
+  }
+  cout << gcount;
+}
